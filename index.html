@@ -1,79 +1,4 @@
 <!doctype html>
-<!-- Ensure there is only one <html> root in the file — remove the duplicated <html>/<head>/<body> block later in the document -->
-<script>
-(function(){
-    const css = `
-        html,body{ cursor:none !important; }
-        .__cursor{
-            position:fixed;
-            left:0; top:0;
-            width:16px; height:16px;
-            border-radius:50%;
-            background:#000;
-            box-shadow: 0 0 18px rgba(0,0,0,0.95), 0 8px 32px rgba(0,0,0,0.5);
-            pointer-events:none;
-            transform: translate(-50%,-50%) scale(1);
-            transition: transform .12s cubic-bezier(.2,.9,.3,1), opacity .12s;
-            z-index:9999;
-        }
-        .__cursor--glow{
-            position:fixed;
-            left:0; top:0;
-            width:56px; height:56px;
-            border-radius:50%;
-            background: radial-gradient(circle, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.12) 40%, transparent 72%);
-            filter: blur(6px);
-            pointer-events:none;
-            transform: translate(-50%,-50%);
-            z-index:9998;
-        }
-    `;
-    const st = document.createElement('style');
-    st.textContent = css;
-    if (document.head) document.head.appendChild(st);
-    else document.addEventListener('DOMContentLoaded', ()=>document.head.appendChild(st));
-
-    function init(){
-        const glow = document.createElement('div'); glow.className = '__cursor--glow';
-        const dot = document.createElement('div'); dot.className = '__cursor';
-        document.body.appendChild(glow);
-        document.body.appendChild(dot);
-
-        let targetX = window.innerWidth/2, targetY = window.innerHeight/2;
-        let x = targetX, y = targetY;
-        const lerp = (a,b,t)=> a + (b-a)*t;
-
-        function handleMove(e){
-            const p = e.touches ? e.touches[0] : e;
-            targetX = p.clientX;
-            targetY = p.clientY;
-            dot.style.opacity = '1';
-            glow.style.opacity = '1';
-            dot.style.transform = 'translate(-50%,-50%) scale(1.05)';
-            clearTimeout(dot._scaleT);
-            dot._scaleT = setTimeout(()=> dot.style.transform = 'translate(-50%,-50%) scale(1)', 120);
-        }
-
-        window.addEventListener('mousemove', handleMove, {passive:true});
-        window.addEventListener('touchmove', handleMove, {passive:true});
-        window.addEventListener('touchstart', handleMove, {passive:true});
-        window.addEventListener('mouseleave', ()=>{ dot.style.opacity='0'; glow.style.opacity='0'; });
-
-        (function render(){
-            x = lerp(x, targetX, 0.22);
-            y = lerp(y, targetY, 0.22);
-            dot.style.left = x + 'px';
-            dot.style.top = y + 'px';
-            glow.style.left = x + 'px';
-            glow.style.top = y + 'px';
-            requestAnimationFrame(render);
-        })();
-    }
-
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-})();
-</script>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -150,11 +75,85 @@
         will-change: transform;
         text-shadow:
             0 0 6px rgba(0,0,0,0.55),
-            0 6px 20px rgba(0,0,0,0.12),
-            0 0 32px rgba(0,0,0,0.18);
-        transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) skewX(var(--sk)) scale(var(--scale));
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<script>
+(function(){
+    const css = `
+        html,body{ cursor:none !important; }
+        .__cursor{
+            position:fixed;
+            left:0; top:0;
+            width:16px; height:16px;
+            border-radius:50%;
+            background:#000;
+            box-shadow: 0 0 18px rgba(0,0,0,0.95), 0 8px 32px rgba(0,0,0,0.5);
+            pointer-events:none;
+            transform: translate(-50%,-50%) scale(1);
+            transition: transform .12s cubic-bezier(.2,.9,.3,1), opacity .12s;
+            z-index:9999;
+        }
+        .__cursor--glow{
+            position:fixed;
+            left:0; top:0;
+            width:56px; height:56px;
+            border-radius:50%;
+            background: radial-gradient(circle, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.12) 40%, transparent 72%);
+            filter: blur(6px);
+            pointer-events:none;
+            transform: translate(-50%,-50%);
+            z-index:9998;
+        }
+    `;
+    const st = document.createElement('style');
+    st.textContent = css;
+    if (document.head) document.head.appendChild(st);
+    else document.addEventListener('DOMContentLoaded', ()=>document.head.appendChild(st));
+
+    function init(){
+        const glow = document.createElement('div'); glow.className = '__cursor--glow';
+        const dot = document.createElement('div'); dot.className = '__cursor';
+        document.body.appendChild(glow);
+        document.body.appendChild(dot);
+
+        let targetX = window.innerWidth/2, targetY = window.innerHeight/2;
+        let x = targetX, y = targetY;
+        const lerp = (a,b,t)=> a + (b-a)*t;
+
+        function handleMove(e){
+            const p = e.touches ? e.touches[0] : e;
+            targetX = p.clientX;
+            targetY = p.clientY;
+            dot.style.opacity = '1';
+            glow.style.opacity = '1';
+            dot.style.transform = 'translate(-50%,-50%) scale(1.05)';
+            clearTimeout(dot._scaleT);
+            dot._scaleT = setTimeout(()=> dot.style.transform = 'translate(-50%,-50%) scale(1)', 120);
+        }
+
+        window.addEventListener('mousemove', handleMove, {passive:true});
+        window.addEventListener('touchmove', handleMove, {passive:true});
+        window.addEventListener('touchstart', handleMove, {passive:true});
+        window.addEventListener('mouseleave', ()=>{ dot.style.opacity='0'; glow.style.opacity='0'; });
+
+        (function render(){
+            x = lerp(x, targetX, 0.22);
+            y = lerp(y, targetY, 0.22);
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            glow.style.left = x + 'px';
+            glow.style.top = y + 'px';
+            requestAnimationFrame(render);
+        })();
     }
-    .title span{
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+})();
+</script>
+<title>Reversal — Warp Text</title>
+<style>
         display:inline-block;
         transition: transform 0.45s cubic-bezier(.2,.9,.3,1);
         transform-origin:50% 50%;
@@ -341,3 +340,4 @@
 </script>
 </body>
 </html>
+
